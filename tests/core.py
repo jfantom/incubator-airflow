@@ -1925,7 +1925,6 @@ class WebPasswordAuthTest(unittest.TestCase):
 
 class WebProxiedAuthTest(unittest.TestCase):
     def setUp(self):
-        def setUp(self):
         configuration.conf.set("webserver", "authenticate", "True")
         configuration.conf.set("webserver", "auth_backend", "airflow.contrib.auth.backends.proxied_auth")
 
