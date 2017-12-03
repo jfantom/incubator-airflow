@@ -1936,26 +1936,24 @@ class WebProxiedAuthTest(unittest.TestCase):
         response = self.app.get("/admin/airflow/landing_times")
         self.assertEqual(response.status_code, 302)
 
-    def login(self, email):
+    def get_url(self, email):
         header_field = os.getenv('AIRFLOW_PROXIED_AUTH_HEADER', 'X-Email')
 
-        return self.app.post('/admin/airflow/login', headers={
+        return self.app.get('/admin/airflow/landing_times', headers={
             header_field: email
         }, follow_redirects=True)
 
     def test_login_logout_proxied_auth(self):
         self.assertTrue(configuration.getboolean('webserver', 'authenticate'))
 
-        response = self.login('user@gmail')
+        response = self.get_url('user@gmail')
         self.assertIn('Data Profiling', response.data.decode('utf-8'))
 
         os.environ['AIRFLOW_PROXIED_AUTH_HEADER'] = 'X-User'
-        response = self.login('test_username')
+        response = self.get_url('test_username')
         self.assertIn('Incorrect login details', response.data.decode('utf-8'))
         del os.environ['AIRFLOW_PROXIED_AUTH_HEADER']
         
-        response = self.logout()
-        self.assertIn('form-signin', response.data.decode('utf-8'))
 
     def tearDown(self):
         configuration.load_test_config()
