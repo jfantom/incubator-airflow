@@ -87,10 +87,11 @@ class ProxiedAuth(object):
         if user_email is None:
             raise AuthenticationError(
                   'Airflow failed to get autheticate used with proxied authentication.\
-                  This might mean the headers were set incorrectly'))
+                  This might mean the headers were set incorrectly')
 
         # insert user into database if doesn't exist
-        user = session.query(models.User).filter(
+        user = session.query(models.User)
+        .filter(
             models.User.username == user_email).first()
 
         if not user:
