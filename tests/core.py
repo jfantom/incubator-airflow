@@ -1943,7 +1943,7 @@ class WebProxiedAuthTest(unittest.TestCase):
             header_field: email
         }, follow_redirects=True)
 
-    def test_login_logout_proxied_auth(self):
+    def test_request_headers_proxied_auth(self):
         self.assertTrue(configuration.getboolean('webserver', 'authenticate'))
 
         response = self.get_url('user@gmail')
