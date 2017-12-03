@@ -86,12 +86,11 @@ class ProxiedAuth(object):
         # this shouldn't happen since nginx should take care of it!
         if user_email is None:
             raise AuthenticationError(
-                  'Airflow failed to get autheticate used with proxied authentication.\
-                  This might mean the headers were set incorrectly')
+                  'Airflow failed to get google verified email ({0})'.format(
+                  resp.status if resp else 'None'))
 
         # insert user into database if doesn't exist
-        user = session.query(models.User)
-        .filter(
+        user = session.query(models.User).filter(
             models.User.username == user_email).first()
 
         if not user:
@@ -104,6 +103,7 @@ class ProxiedAuth(object):
         session.close()
 
         return ProxiedUser(user)
+
 
 login_manager = ProxiedAuth()
 
