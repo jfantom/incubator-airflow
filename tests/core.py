@@ -1931,7 +1931,10 @@ class WebProxiedAuthTest(unittest.TestCase):
         app = application.create_app()
         app.config['TESTING'] = True
         self.app = app.test_client()
-    
+
+        self.dagbag = models.DagBag(include_examples=True)
+        self.example_xcom = self.dagbag.dags['example_xcom']
+
     def test_unauthorized_proxied_auth(self):
         response = self.app.get("/admin/airflow/landing_times")
         self.assertEqual(response.status_code, 302)
@@ -1939,7 +1942,8 @@ class WebProxiedAuthTest(unittest.TestCase):
     def get_url(self, email):
         header_field = os.getenv('AIRFLOW_PROXIED_AUTH_HEADER', 'X-Email')
 
-        return self.app.get('/admin/airflow/landing_times', headers={
+        return self.app.get('/admin/airflow/landing_times?'
+            'days=30&dag_id=example_xcom', headers={
             header_field: email
         }, follow_redirects=True)
 
