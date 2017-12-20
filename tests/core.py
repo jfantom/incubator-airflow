@@ -1937,7 +1937,7 @@ class WebProxiedAuthTest(unittest.TestCase):
 
     def test_unauthorized_proxied_auth(self):
         response = self.app.get("/admin/airflow/landing_times")
-        self.assertEqual(response.status_code, 302)
+        self.assertIn('Airflow failed to get fields from request header', response.data.decode('utf-8'))
 
     def get_url(self, email):
         header_field = os.getenv('AIRFLOW_PROXIED_AUTH_HEADER', 'X-Email')
@@ -1955,7 +1955,7 @@ class WebProxiedAuthTest(unittest.TestCase):
 
         os.environ['AIRFLOW_PROXIED_AUTH_HEADER'] = 'X-User'
         response = self.get_url('test_username')
-        self.assertIn('Incorrect login details', response.data.decode('utf-8'))
+        self.assertIn('Data Profiling', response.data.decode('utf-8'))
         del os.environ['AIRFLOW_PROXIED_AUTH_HEADER']
         
 
