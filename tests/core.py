@@ -1911,10 +1911,6 @@ class WebPasswordAuthTest(unittest.TestCase):
         response = self.logout()
         self.assertIn('form-signin', response.data.decode('utf-8'))
 
-    def test_unauthorized_password_auth(self):
-        response = self.app.get("/admin/airflow/landing_times")
-        self.assertEqual(response.status_code, 302)
-
     def tearDown(self):
         configuration.load_test_config()
         session = Session()
