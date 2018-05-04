@@ -1937,6 +1937,9 @@ class WebProxiedAuthTest(unittest.TestCase):
 
     def test_unauthorized_proxied_auth(self):
         response = self.app.get("/admin/airflow/landing_times")
+        print response
+        print response.data
+        print response.status_code
         self.assertIn('Airflow failed to get fields from request header', response.data.decode('utf-8'))
 
     def get_url(self, email):
