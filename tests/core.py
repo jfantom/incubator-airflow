@@ -1931,13 +1931,6 @@ class WebProxiedAuthTest(unittest.TestCase):
         self.dagbag = models.DagBag(include_examples=True)
         self.example_xcom = self.dagbag.dags['example_xcom']
 
-    def test_unauthorized_proxied_auth(self):
-        response = self.app.get("/admin/airflow/landing_times")
-        print response
-        print response.data
-        print response.status_code
-        self.assertIn('Airflow failed to get fields from request header', response.data.decode('utf-8'))
-
     def get_url(self, email):
         header_field = os.getenv('AIRFLOW_PROXIED_AUTH_HEADER', 'X-Email')
 
